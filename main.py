@@ -79,6 +79,22 @@ def change():
                     RED += 1
                 # break
 
+def restart():
+    global particles , BLUE , RED , GREEN , count
+    particles = []
+    BLUE = count
+    RED = count
+    GREEN = count
+    for _ in range(BLUE):
+        particles.append(Particle("blue", Ray()))
+
+    for _ in range(RED):
+        particles.append(Particle("red", Ray()))
+
+    for _ in range(GREEN):
+        particles.append(Particle("green", Ray()))
+
+restart()
 
 pygame.init()
 screen = pygame.display.set_mode( (WIDTH , HEIGHT)) 
@@ -86,7 +102,8 @@ clock = pygame.time.Clock()
 
 
 while True:
-
+    screen.fill("black")
+    screen.blit(screen,(0,0))
     pygame.display.set_caption(f" FPS : {round(clock.get_fps())} Ray Casting")
         
     for event in pygame.event.get():
