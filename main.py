@@ -2,6 +2,7 @@ import pygame
 from sys import exit
 import random
 import math
+import time
 
 WIDTH , HEIGHT = 1200 , 700
 
@@ -110,6 +111,41 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+
+    color_count = pygame.font.Font(None, 30)
+    color_count = color_count.render(f"blue : {BLUE}    red : {RED}    green : {GREEN}", True, "white")
+    color_count_rect = color_count.get_rect(center=(WIDTH / 2, 100))
+    screen.blit(color_count , color_count_rect)
+
+    blue_win_count = pygame.font.Font(None, 30)
+    blue_win_count = blue_win_count.render(f"blue : {blue_win}", True, "white")
+    blue_win_count_rect = blue_win_count.get_rect(center=(200, HEIGHT / 2))
+    screen.blit(blue_win_count , blue_win_count_rect)
+
+    red_win_count = pygame.font.Font(None, 30)
+    red_win_count = red_win_count.render(f"red : {red_win}", True, "white")
+    red_win_count_rect = red_win_count.get_rect(center=(200, HEIGHT / 2 - 30))
+    screen.blit(red_win_count , red_win_count_rect)
+
+    green_win_count = pygame.font.Font(None, 30)
+    green_win_count = green_win_count.render(f"green : {green_win}", True, "white")
+    green_win_count_rect = green_win_count.get_rect(center=(200, HEIGHT / 2 + 30))
+    screen.blit(green_win_count , green_win_count_rect)
+
+
+    if not (RED == count * 3 or BLUE == count * 3 or GREEN == count * 3):
+        change()
+        move_particles()
+    else:
+        if RED == count * 3:
+            red_win += 1
+        elif BLUE == count * 3:
+            blue_win += 1
+        elif GREEN == count * 3:
+            green_win += 1
+
+        time.sleep(1)
+        restart()
 
     pygame.display.update()
     clock.tick(60)
