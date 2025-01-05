@@ -53,6 +53,11 @@ class Ray:
         else:
             self.y *= -1
 
+def move_particles():
+    pygame.draw.rect(screen, "white", pygame.Rect(WIDTH // 2 - int(WIDTH * 0.15) - 7 , HEIGHT // 2 - int(WIDTH * 0.15) - 7 , int(WIDTH * 0.15) * 2 + 13, int(WIDTH * 0.15) * 2 + 13))
+    for particle in particles:
+        particle.move()
+        particle.draw()
 
 pygame.init()
 screen = pygame.display.set_mode( (WIDTH , HEIGHT)) 
