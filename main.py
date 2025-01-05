@@ -11,10 +11,14 @@ count = 20
 BLUE = count
 RED = count
 GREEN = count
+YELLOW = count
+PURPLE = count
 
 blue_win = 0
 red_win = 0
 green_win = 0
+yellow_win = 0
+purple_win = 0
 
 SPEED = 2
 
@@ -95,6 +99,12 @@ def restart():
     for _ in range(GREEN):
         particles.append(Particle("green", Ray()))
 
+    for _ in range(YELLOW):
+        particles.append(Particle("yellow", Ray()))
+
+    for _ in range(PURPLE):
+        particles.append(Particle("purple", Ray()))
+
 restart()
 
 pygame.init()
@@ -133,16 +143,20 @@ while True:
     screen.blit(green_win_count , green_win_count_rect)
 
 
-    if not (RED == count * 3 or BLUE == count * 3 or GREEN == count * 3):
+    if not (RED == count * 5 or BLUE == count * 5 or GREEN == count * 5):
         change()
         move_particles()
     else:
-        if RED == count * 3:
+        if RED == count * 5:
             red_win += 1
-        elif BLUE == count * 3:
+        elif BLUE == count * 5:
             blue_win += 1
-        elif GREEN == count * 3:
+        elif GREEN == count * 5:
             green_win += 1
+        elif YELLOW == count * 5:
+            yellow_win += 1
+        elif PURPLE == count * 5:
+            purple_win += 1
 
         time.sleep(1)
         restart()
