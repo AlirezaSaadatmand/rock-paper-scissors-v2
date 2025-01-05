@@ -1,5 +1,6 @@
 import pygame
 from sys import exit
+import random
 
 WIDTH , HEIGHT = 1200 , 700
 
@@ -17,6 +18,26 @@ SPEED = 2
 
 particles = []
 
+class Particle:
+    def __init__(self , type , ray):
+        self.type = type
+        self.ray = ray
+        self.x = random.randint(WIDTH // 2 - 150 , WIDTH // 2 + 150)
+        self.y = random.randint(HEIGHT // 2 - 150 , HEIGHT // 2 + 150)
+        self.color = type
+
+    def move(self):
+        if self.x > WIDTH // 2 + int(WIDTH * 0.15) or self.x < WIDTH // 2 - int(WIDTH * 0.15):
+            self.ray.colide("side")
+        if self.y > HEIGHT // 2 + int(WIDTH * 0.15) or self.y < HEIGHT // 2 - int(WIDTH * 0.15):
+            self.ray.colide("not side")
+
+        self.x += self.ray.x * SPEED
+        self.y += self.ray.y * SPEED
+
+    
+    def draw(self):
+        pygame.draw.circle(screen, self.color , (self.x , self.y), 7)
 
 
 pygame.init()
