@@ -59,6 +59,27 @@ def move_particles():
         particle.move()
         particle.draw()
 
+def change():
+    global GREEN , BLUE , RED
+    for i in particles:
+        for j in particles:
+            if math.dist([i.x , i.y] , [j.x , j.y]) < 15:
+
+                if i.color == "red" and j.color == "green":
+                    i.color = "green"
+                    RED -= 1
+                    GREEN += 1 
+                elif i.color == "green" and j.color == "blue":
+                    i.color = "blue"
+                    GREEN -= 1
+                    BLUE += 1
+                elif i.color == "blue" and j.color == "red":
+                    i.color = "red"
+                    BLUE -= 1
+                    RED += 1
+                # break
+
+
 pygame.init()
 screen = pygame.display.set_mode( (WIDTH , HEIGHT)) 
 clock = pygame.time.Clock()
