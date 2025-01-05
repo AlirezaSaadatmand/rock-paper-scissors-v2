@@ -1,6 +1,7 @@
 import pygame
 from sys import exit
 import random
+import math
 
 WIDTH , HEIGHT = 1200 , 700
 
@@ -38,6 +39,19 @@ class Particle:
     
     def draw(self):
         pygame.draw.circle(screen, self.color , (self.x , self.y), 7)
+
+
+class Ray:
+    def __init__(self):
+        self.angle = random.random() * 2 * math.pi
+        self.x = math.sin(self.angle)
+        self.y = math.cos(2 * math.pi - self.angle)
+    
+    def colide(self , side):
+        if side == "side":
+            self.x *= -1
+        else:
+            self.y *= -1
 
 
 pygame.init()
