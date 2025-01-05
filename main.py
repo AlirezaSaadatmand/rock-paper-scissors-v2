@@ -33,9 +33,9 @@ class Particle:
         self.color = type
 
     def move(self):
-        if self.x > WIDTH // 2 + int(WIDTH * 0.15) or self.x < WIDTH // 2 - int(WIDTH * 0.15):
+        if self.x > WIDTH // 2 + int(WIDTH * 0.2) or self.x < WIDTH // 2 - int(WIDTH * 0.2):
             self.ray.colide("side")
-        if self.y > HEIGHT // 2 + int(WIDTH * 0.15) or self.y < HEIGHT // 2 - int(WIDTH * 0.15):
+        if self.y > HEIGHT // 2 + int(WIDTH * 0.2) or self.y < HEIGHT // 2 - int(WIDTH * 0.2):
             self.ray.colide("not side")
 
         self.x += self.ray.x * SPEED
@@ -59,37 +59,72 @@ class Ray:
             self.y *= -1
 
 def move_particles():
-    pygame.draw.rect(screen, "white", pygame.Rect(WIDTH // 2 - int(WIDTH * 0.15) - 7 , HEIGHT // 2 - int(WIDTH * 0.15) - 7 , int(WIDTH * 0.15) * 2 + 13, int(WIDTH * 0.15) * 2 + 13))
+    pygame.draw.rect(screen, "white", pygame.Rect(WIDTH // 2 - int(WIDTH * 0.2) - 7 , HEIGHT // 2 - int(WIDTH * 0.2) - 7 , int(WIDTH * 0.2) * 2 + 13, int(WIDTH * 0.2) * 2 + 13))
     for particle in particles:
         particle.move()
         particle.draw()
 
 def change():
-    global GREEN , BLUE , RED
+    global GREEN , BLUE , RED , YELLOW , PURPLE
     for i in particles:
         for j in particles:
             if math.dist([i.x , i.y] , [j.x , j.y]) < 15:
 
                 if i.color == "red" and j.color == "green":
-                    i.color = "green"
-                    RED -= 1
-                    GREEN += 1 
-                elif i.color == "green" and j.color == "blue":
-                    i.color = "blue"
-                    GREEN -= 1
-                    BLUE += 1
-                elif i.color == "blue" and j.color == "red":
-                    i.color = "red"
-                    BLUE -= 1
+                    j.color = "red"
                     RED += 1
+                    GREEN -= 1 
+                elif i.color == "red" and j.color == "blue":
+                    j.color = "red"
+                    RED += 1
+                    BLUE -= 1
+
+                elif i.color == "blue" and j.color == "green":
+                    j.color = "blue"
+                    BLUE += 1
+                    GREEN -= 1
+                elif i.color == "blue" and j.color == "purple":
+                    j.color = "blue"
+                    BLUE += 1
+                    PURPLE -= 1
+
+                elif i.color == "green" and j.color == "purple":
+                    j.color = "green"
+                    GREEN += 1
+                    PURPLE -= 1
+                elif i.color == "green" and j.color == "yellow":
+                    j.color = "green"
+                    GREEN += 1
+                    YELLOW -= 1
+                
+                elif i.color == "purple" and j.color == "yellow":
+                    j.color = "purple"
+                    PURPLE += 1
+                    YELLOW -= 1
+                elif i.color == "purple" and j.color == "red":
+                    j.color = "purple"
+                    PURPLE += 1
+                    RED -= 1
+                
+                elif i.color == "yellow" and j.color == "red":
+                    j.color = "yellow"
+                    YELLOW += 1
+                    RED -= 1    
+                elif i.color == "yellow" and j.color == "blue":
+                    j.color = "yellow"
+                    YELLOW += 1
+                    BLUE -= 1
+  
                 # break
 
 def restart():
-    global particles , BLUE , RED , GREEN , count
+    global particles , BLUE , RED , GREEN , YELLOW , PURPLE , count
     particles = []
     BLUE = count
     RED = count
     GREEN = count
+    YELLOW = count
+    PURPLE = count
     for _ in range(BLUE):
         particles.append(Particle("blue", Ray()))
 
@@ -123,8 +158,8 @@ while True:
             exit()
 
     color_count = pygame.font.Font(None, 30)
-    color_count = color_count.render(f"blue : {BLUE}    red : {RED}    green : {GREEN}", True, "white")
-    color_count_rect = color_count.get_rect(center=(WIDTH / 2, 100))
+    color_count = color_count.render(f"blue : {BLUE}    red : {RED}    green : {GREEN}    yellow : {YELLOW}    purple : {PURPLE}", True, "white")
+    color_count_rect = color_count.get_rect(center=(WIDTH / 2, 70))
     screen.blit(color_count , color_count_rect)
 
     blue_win_count = pygame.font.Font(None, 30)
@@ -142,8 +177,18 @@ while True:
     green_win_count_rect = green_win_count.get_rect(center=(200, HEIGHT / 2 + 30))
     screen.blit(green_win_count , green_win_count_rect)
 
+    yellow_win_count = pygame.font.Font(None, 30)
+    yellow_win_count = yellow_win_count.render(f"yellow : {yellow_win}", True, "white")
+    yellow_win_count_rect = yellow_win_count.get_rect(center=(200, HEIGHT / 2 + 60))
+    screen.blit(yellow_win_count , yellow_win_count_rect)
 
-    if not (RED == count * 5 or BLUE == count * 5 or GREEN == count * 5):
+    purple_win_count = pygame.font.Font(None, 30)
+    purple_win_count = purple_win_count.render(f"purple : {purple_win}", True, "white")
+    purple_win_count_rect = purple_win_count.get_rect(center=(200, HEIGHT / 2 - 60))
+    screen.blit(purple_win_count , purple_win_count_rect)
+
+
+    if not (RED == count * 5 or BLUE == count * 5 or GREEN == count * 5 or YELLOW == count * 5 or PURPLE == count * 5):
         change()
         move_particles()
     else:
