@@ -6,7 +6,9 @@ import time
 
 WIDTH , HEIGHT = 1200 , 700
 
-count = 20
+count = 10
+
+RADIUS = 10
 
 BLUE = count
 RED = count
@@ -28,8 +30,8 @@ class Particle:
     def __init__(self , type , ray):
         self.type = type
         self.ray = ray
-        self.x = random.randint(WIDTH // 2 - 150 , WIDTH // 2 + 150)
-        self.y = random.randint(HEIGHT // 2 - 150 , HEIGHT // 2 + 150)
+        self.x = random.randint(WIDTH // 2 - 200 , WIDTH // 2 + 200)
+        self.y = random.randint(HEIGHT // 2 - 200 , HEIGHT // 2 + 200)
         self.color = type
 
     def move(self):
@@ -43,7 +45,7 @@ class Particle:
 
     
     def draw(self):
-        pygame.draw.circle(screen, self.color , (self.x , self.y), 7)
+        pygame.draw.circle(screen, self.color , (self.x , self.y), RADIUS)
 
 
 class Ray:
@@ -59,7 +61,7 @@ class Ray:
             self.y *= -1
 
 def move_particles():
-    pygame.draw.rect(screen, "white", pygame.Rect(WIDTH // 2 - int(WIDTH * 0.2) - 7 , HEIGHT // 2 - int(WIDTH * 0.2) - 7 , int(WIDTH * 0.2) * 2 + 13, int(WIDTH * 0.2) * 2 + 13))
+    pygame.draw.rect(screen, "white", pygame.Rect(WIDTH // 2 - int(WIDTH * 0.2) - RADIUS , HEIGHT // 2 - int(WIDTH * 0.2) - RADIUS , int(WIDTH * 0.2) * 2 + RADIUS * 2, int(WIDTH * 0.2) * 2 + RADIUS * 2))
     for particle in particles:
         particle.move()
         particle.draw()
@@ -68,8 +70,9 @@ def change():
     global GREEN , BLUE , RED , YELLOW , PURPLE
     for i in particles:
         for j in particles:
-            if math.dist([i.x , i.y] , [j.x , j.y]) < 15:
-
+            if math.dist([i.x , i.y] , [j.x , j.y]) < RADIUS * 2 and i.color != j.color:
+                sound_effect.stop()
+                sound_effect.play()
                 if i.color == "red" and j.color == "green":
                     j.color = "red"
                     RED += 1
@@ -143,14 +146,16 @@ def restart():
 restart()
 
 pygame.init()
+pygame.mixer.init()
 screen = pygame.display.set_mode( (WIDTH , HEIGHT)) 
 clock = pygame.time.Clock()
 
-
+sound_effect = pygame.mixer.Sound("sound_effects/sound_effect3.wav")
+sound_effect.set_volume(0.5) 
 while True:
     screen.fill("black")
     screen.blit(screen,(0,0))
-    pygame.display.set_caption(f" FPS : {round(clock.get_fps())} Ray Casting")
+    pygame.display.set_caption(f" FPS : {round(clock.get_fps())} Color Fight")
         
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -163,27 +168,27 @@ while True:
     screen.blit(color_count , color_count_rect)
 
     blue_win_count = pygame.font.Font(None, 30)
-    blue_win_count = blue_win_count.render(f"blue : {blue_win}", True, "white")
+    blue_win_count = blue_win_count.render(f"blue : {blue_win}", True, "blue")
     blue_win_count_rect = blue_win_count.get_rect(center=(200, HEIGHT / 2))
     screen.blit(blue_win_count , blue_win_count_rect)
 
     red_win_count = pygame.font.Font(None, 30)
-    red_win_count = red_win_count.render(f"red : {red_win}", True, "white")
+    red_win_count = red_win_count.render(f"red : {red_win}", True, "red")
     red_win_count_rect = red_win_count.get_rect(center=(200, HEIGHT / 2 - 30))
     screen.blit(red_win_count , red_win_count_rect)
 
     green_win_count = pygame.font.Font(None, 30)
-    green_win_count = green_win_count.render(f"green : {green_win}", True, "white")
+    green_win_count = green_win_count.render(f"green : {green_win}", True, "green")
     green_win_count_rect = green_win_count.get_rect(center=(200, HEIGHT / 2 + 30))
     screen.blit(green_win_count , green_win_count_rect)
 
     yellow_win_count = pygame.font.Font(None, 30)
-    yellow_win_count = yellow_win_count.render(f"yellow : {yellow_win}", True, "white")
+    yellow_win_count = yellow_win_count.render(f"yellow : {yellow_win}", True, "yellow")
     yellow_win_count_rect = yellow_win_count.get_rect(center=(200, HEIGHT / 2 + 60))
     screen.blit(yellow_win_count , yellow_win_count_rect)
 
     purple_win_count = pygame.font.Font(None, 30)
-    purple_win_count = purple_win_count.render(f"purple : {purple_win}", True, "white")
+    purple_win_count = purple_win_count.render(f"purple : {purple_win}", True, "purple")
     purple_win_count_rect = purple_win_count.get_rect(center=(200, HEIGHT / 2 - 60))
     screen.blit(purple_win_count , purple_win_count_rect)
 
