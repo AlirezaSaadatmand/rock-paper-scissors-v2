@@ -27,11 +27,11 @@ SPEED = 2
 particles = []
 
 class Particle:
-    def __init__(self , type , ray):
+    def __init__(self , type , ray , point1 , point2):
         self.type = type
         self.ray = ray
-        self.x = random.randint(WIDTH // 2 - 200 , WIDTH // 2 + 200)
-        self.y = random.randint(HEIGHT // 2 - 200 , HEIGHT // 2 + 200)
+        self.x = random.randint(point1[0] , point2[0])
+        self.y = random.randint(point1[1] , point2[1])
         self.color = type
 
     def move(self):
@@ -129,19 +129,19 @@ def restart():
     YELLOW = count
     PURPLE = count
     for _ in range(BLUE):
-        particles.append(Particle("blue", Ray()))
+        particles.append(Particle("blue", Ray() , (WIDTH // 2 - 200 , HEIGHT // 2 - 200) , (WIDTH // 2 - 100 , HEIGHT // 2 - 100)))
 
     for _ in range(RED):
-        particles.append(Particle("red", Ray()))
+        particles.append(Particle("red", Ray() , (WIDTH // 2 - 200 , HEIGHT // 2 + 100) , (WIDTH // 2 - 100 , HEIGHT // 2 + 200)))
 
     for _ in range(GREEN):
-        particles.append(Particle("green", Ray()))
+        particles.append(Particle("green", Ray() , (WIDTH // 2 - 50 , HEIGHT // 2 - 50) , (WIDTH // 2 + 50 , HEIGHT // 2 + 50)))
 
     for _ in range(YELLOW):
-        particles.append(Particle("yellow", Ray()))
+        particles.append(Particle("yellow", Ray() , (WIDTH // 2 + 100 , HEIGHT // 2 - 200) , (WIDTH // 2 + 200 , HEIGHT // 2 - 100)))
 
     for _ in range(PURPLE):
-        particles.append(Particle("purple", Ray()))
+        particles.append(Particle("purple", Ray() , (WIDTH // 2 + 100 , HEIGHT // 2 + 100) , (WIDTH // 2 + 200 , HEIGHT // 2 + 200)))
 
 restart()
 
@@ -151,7 +151,10 @@ screen = pygame.display.set_mode( (WIDTH , HEIGHT))
 clock = pygame.time.Clock()
 
 sound_effect = pygame.mixer.Sound("sound_effects/sound_effect3.wav")
-sound_effect.set_volume(0.5) 
+sound_effect.set_volume(0.2) 
+
+pygame.mixer.music.load("sound_effects/background_sound_effect.mp3")
+pygame.mixer.music.play(loops=-1)
 while True:
     screen.fill("black")
     screen.blit(screen,(0,0))
